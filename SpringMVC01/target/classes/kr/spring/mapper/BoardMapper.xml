@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.spring.mapper.BoardMapper">
+
+<!-- 게시글 전체 보기 기능 -->
+<select id="getLists" resultType="kr.spring.entity.Board">
+	SELECT * 
+	FROM BOARD 
+	ORDER BY INDATE DESC 
+</select>
+
+<!-- 게시글 등록 -->
+<insert id="boardInsert" parameterType="kr.spring.entity.Board">
+	INSERT INTO 
+	BOARD(TITLE, CONTENT, WRITER) 
+	VALUES(#{title}, #{content}, #{writer})
+</insert>
+
+<!-- 게시글 상세보기 -->
+<select id="boardContent" parameterType="int" resultType="kr.spring.entity.Board">
+	SELECT * 
+	FROM BOARD 
+	WHERE IDX = #{idx} 
+</select>
+
+<!-- 게시글 상세보기 조회수 증가  -->
+<update id="boardCount" parameterType="int">
+	UPDATE BOARD 
+	SET COUNT = COUNT + 1
+	WHERE IDX=#{idx} 
+</update>
+
+<!-- 게시글 삭제 -->
+<delete id="boardDelete" parameterType="int" >
+	DELETE
+	FROM BOARD 
+	WHERE IDX=#{idx} 
+</delete>
+
+<!-- 게시글 수정 -->
+<update id="boardUpdate" parameterType="kr.spring.entity.Board"> 
+	UPDATE BOARD SET TITLE=#{title}, CONTENT=#{content}, WRITER =#{writer}
+	WHERE IDX=#{idx}
+</update>
+
+</mapper>
+
+
+<!-- 
+리턴타입이 있을때는 resultType을 작성(해당경로의 보드타입 arrLIST?으로 묶는다)
+
+BoardMapper.java 에서 void 리졸트타입은  없지만 매개변수(파라미터)가 있다면 parameterType을 작성한다 
+근데 mybits에서는 파라미터 타입은 생략해도 되긴 하지만 명시하는게 좋음
+
+마이바티스의 설계도(스키마) mapper.dtd 덕분에 셀렉트 태그 같은걸 쓸 수 있따 
+
+조회수 증가할때, 뒤로가기는. 새로요청한게 아니라, 이전페이지로 이동하는거라 카운트가 안되는거다. 
+-->
