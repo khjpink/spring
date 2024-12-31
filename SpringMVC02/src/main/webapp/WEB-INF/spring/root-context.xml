@@ -28,17 +28,6 @@ xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/
       <property name="dataSource" ref="dataSource" />
    </bean>
 
-   <!--  
-		3. SQL문장만 주면 JDBC 커넥션 실행, 닫기를 수행함
-		JDBC를 쓰려면 커넥션 해야하기 때문에 dataSource를 참조한다 	
-		보드맵퍼.인터페이스에서 SQL문장을 쓰면 SqlSessionFactoryBean가 객체를 구현함
-		
-		오토와이어드는 이 SqlSessionFactoryBean 객체를 받아노는건데 어떻게 받아올 수 있을까? 
-		@Autowired
-		private BoardMapper mapper; 
-		
-		SqlSessionFactoryBean는 보드맵퍼의 자식인데, ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
-	-->
 	    
 </beans>
 	
