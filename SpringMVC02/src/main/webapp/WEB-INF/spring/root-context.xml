@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+   <!-- Root Context: defines shared resources visible to all other web components -->
+   <!-- API(HikariCP) -->
+   <!-- bean : 객체를 생성하는 태그 -->
+   <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+      <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>    
+      <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+      <property name="username" value="shopping"/>
+      <property name="password" value="1234"/>
+   </bean>
+   
+   <!-- HikariDataSource(Connection POOL을 만드는 역할을 한다) -->
+   <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+      <constructor-arg ref="hikariConfig" /> <!-- 2. hikariConfig설정을 참조해서 DAO커넥션을 관리  -->
+   </bean>
+   
+   <!-- Mapper interface들을 메모리에 올리는 방법(scan) -->
+   <!-- 마이바티스가 맵퍼를 찾는 패키지 주소  -->
+   <mybatis-spring:scan base-package="kr.spring.mapper"/>
+   
+   <!-- BoardMapper interface의 구현클래스 생성
+   SqlSessionFactoryBean(SQL을 실행하는 API) -->
+   <bean class="org.mybatis.spring.SqlSessionFactoryBean">
+      <property name="dataSource" ref="dataSource" />
+   </bean>
+
+   <!--  
+		3. SQL문장만 주면 JDBC 커넥션 실행, 닫기를 수행함
+		JDBC를 쓰려면 커넥션 해야하기 때문에 dataSource를 참조한다 	
+		보드맵퍼.인터페이스에서 SQL문장을 쓰면 SqlSessionFactoryBean가 객체를 구현함
+		
+		오토와이어드는 이 SqlSessionFactoryBean 객체를 받아노는건데 어떻게 받아올 수 있을까? 
+		@Autowired
+		private BoardMapper mapper; 
+		
+		SqlSessionFactoryBean는 보드맵퍼의 자식인데, ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
+	-->
+	    
+</beans>
+	
+	
